@@ -117,4 +117,12 @@ public class Form : MonoBehaviour
 
     yield return null;
   }
+
+  public void ToStackHandler()
+  {
+  }
+
+  public void ToQueueHandler()
+  {
+  }
 }
