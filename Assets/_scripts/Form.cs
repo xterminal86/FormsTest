@@ -14,7 +14,7 @@ public class Form : MonoBehaviour
   bool _isGrabbed = false;
 
   void Start()
-  {
+  {    
     FormHead.text = string.Format("Form {0}", Overseer.Instance.GlobalIdentifier);
     Overseer.Instance.GlobalIdentifier++;
 
@@ -118,11 +118,78 @@ public class Form : MonoBehaviour
     yield return null;
   }
 
-  public void ToStackHandler()
-  {
-  }
-
   public void ToQueueHandler()
   {
+    if (Overseer.Instance.FormsQueueRef.QueueRef.Count == Overseer.Instance.FormsQueueRef.MaxElements)
+    {
+      Overseer.Instance.FlashText("Queue is full!", 1.0f);
+      return;
+    }
+
+    var go = GameObject.Find("queue").GetComponent<RectTransform>();
+
+    StartCoroutine(MoveAndShrinkFormRoutine(go.position, () =>
+    {
+      Overseer.Instance.FormsQueueRef.AddForm(this);
+    }));
+  }
+
+  public void ToStackHandler()
+  {
+    if (Overseer.Instance.FormsStackRef.StackRef.Count == Overseer.Instance.FormsStackRef.MaxElements)
+    {
+      Overseer.Instance.FlashText("Stack is full!", 1.0f);
+      return;
+    }
+
+    var go = GameObject.Find("stack").GetComponent<RectTransform>();
+
+    StartCoroutine(MoveAndShrinkFormRoutine(go.position, () =>
+    {
+      Overseer.Instance.FormsStackRef.AddForm(this);
+    }));
+  }
+
+  float _movingTime = 0.2f;
+  IEnumerator MoveAndShrinkFormRoutine(Vector3 posToMoveAt, Callback cb = null)
+  {    
+    float x = posToMoveAt.x;
+    float y = posToMoveAt.y;
+
+    Vector3 pos = transform.position;
+
+    Vector3 scaleVector = Vector3.one;
+
+    float t = 0.0f;
+
+    float dt = t / _movingTime;
+
+    while (dt < 1.0f)
+    {
+      dt = t / _movingTime;
+
+      t += Time.smoothDeltaTime;
+
+      dt = Mathf.Clamp(dt, 0.0f, 1.0f);
+
+      transform.position = Vector3.Lerp(pos, posToMoveAt, dt);
+
+      float scale = 1.0f - dt;
+
+      scaleVector.Set(scale, scale, scale);
+
+      transform.localScale = scaleVector;
+
+      yield return null;
+    }
+
+    gameObject.SetActive(false);
+
+    if (cb != null)
+    {
+      cb();
+    }
+
+    yield return null;
   }
 }
