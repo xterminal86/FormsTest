@@ -5,4 +5,6 @@ using UnityEngine;
 public class Overseer : MonoSingleton<Overseer>
 {
   public int GlobalIdentifier = 0;
+
+  public Form LastDraggedForm;
 }

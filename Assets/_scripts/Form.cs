@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class Form : MonoBehaviour 
 {
+  public Canvas FormCanvas;
   public Text FormHead;
   public InputField FormText;
 
@@ -53,6 +54,14 @@ public class Form : MonoBehaviour
     _isGrabbed = true;
     _originalPosition.Set(transform.position.x, transform.position.y, transform.position.z);
     _oldMousePos = Input.mousePosition;
+
+    if (Overseer.Instance.LastDraggedForm != null && Overseer.Instance.LastDraggedForm != this)
+    {
+      Overseer.Instance.LastDraggedForm.FormCanvas.sortingOrder = 0;
+    }
+
+    FormCanvas.sortingOrder = 1;
+    Overseer.Instance.LastDraggedForm = this;
   }
 
   public void DragZoneDeselected()
