@@ -123,35 +123,43 @@ public class Form : MonoBehaviour
 
   public void ToQueueHandler()
   {
-    if (Overseer.Instance.FormsQueueRef.Container.Count == Overseer.Instance.FormsQueueRef.MaxElements)
+    if (Overseer.Instance.FormsQueueRef.Container.Count >= Overseer.Instance.FormsQueueRef.MaxElements)
     {
+      Overseer.Instance.FormsQueueRef.FlashContainer();
       Overseer.Instance.FlashText("Queue is full!", 1.0f);
       return;
     }
 
     var go = GameObject.Find("queue").GetComponent<RectTransform>();
 
+    // We should add form to container before animation to avoid adding when previous animation is still playing
+
+    Overseer.Instance.FormsQueueRef.AddForm(this);
+
     StartCoroutine(MoveAndShrinkFormRoutine(go.position, () =>
     {
       _data.State = FormState.IN_QUEUE;
-      Overseer.Instance.FormsQueueRef.AddForm(this);
     }));
   }
 
   public void ToStackHandler()
   {
-    if (Overseer.Instance.FormsStackRef.Container.Count == Overseer.Instance.FormsStackRef.MaxElements)
+    if (Overseer.Instance.FormsStackRef.Container.Count >= Overseer.Instance.FormsStackRef.MaxElements)
     {
+      Overseer.Instance.FormsStackRef.FlashContainer();
       Overseer.Instance.FlashText("Stack is full!", 1.0f);
       return;
     }
 
     var go = GameObject.Find("stack").GetComponent<RectTransform>();
 
+    // We should add form to container before animation to avoid adding when previous animation is still playing
+
+    Overseer.Instance.FormsStackRef.AddForm(this);
+
     StartCoroutine(MoveAndShrinkFormRoutine(go.position, () =>
     {
       _data.State = FormState.IN_STACK;
-      Overseer.Instance.FormsStackRef.AddForm(this);
     }));
   }
 

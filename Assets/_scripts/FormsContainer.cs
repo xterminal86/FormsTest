@@ -103,4 +103,46 @@ public class FormsContainer : MonoBehaviour
 
     yield return null;
   }
+
+  public void FlashContainer()
+  {
+    StartCoroutine(FlashContainerRoutine());
+  }
+
+  float _flashPeriod = 0.1f;
+  IEnumerator FlashContainerRoutine()
+  {
+    Color[] colors = new Color[2] { Color.red, Color.white };
+
+    int index = 0;
+
+    for (int i = 0; i < 4; i++)
+    {
+      float t = 0.0f;
+      float dt = t / _flashPeriod;
+
+      ImageRef.color = colors[index];
+      ElementsCounter.color = colors[index];
+
+      while (dt < 1.0f)
+      {
+        t += Time.smoothDeltaTime;
+
+        dt = t / _flashPeriod;
+
+        dt = Mathf.Clamp(dt, 0.0f, 1.0f);
+
+        yield return null;
+      }
+
+      index++;
+
+      if (index > 1)
+      {
+        index = 0;
+      }
+    }
+
+    yield return null;
+  }
 }
