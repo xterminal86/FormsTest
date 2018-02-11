@@ -145,4 +145,9 @@ public class Main : MonoBehaviour
       _allForms.Add(f);
     }
   }
+
+  public void ExitAppHandler()
+  {
+    Application.Quit();
+  }
 }
