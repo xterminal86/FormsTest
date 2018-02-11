@@ -120,7 +120,7 @@ public class Form : MonoBehaviour
 
   public void ToQueueHandler()
   {
-    if (Overseer.Instance.FormsQueueRef.QueueRef.Count == Overseer.Instance.FormsQueueRef.MaxElements)
+    if (Overseer.Instance.FormsQueueRef.Container.Count == Overseer.Instance.FormsQueueRef.MaxElements)
     {
       Overseer.Instance.FlashText("Queue is full!", 1.0f);
       return;
@@ -136,7 +136,7 @@ public class Form : MonoBehaviour
 
   public void ToStackHandler()
   {
-    if (Overseer.Instance.FormsStackRef.StackRef.Count == Overseer.Instance.FormsStackRef.MaxElements)
+    if (Overseer.Instance.FormsStackRef.Container.Count == Overseer.Instance.FormsStackRef.MaxElements)
     {
       Overseer.Instance.FlashText("Stack is full!", 1.0f);
       return;
