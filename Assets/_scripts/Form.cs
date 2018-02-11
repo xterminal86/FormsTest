@@ -14,11 +14,14 @@ public class Form : MonoBehaviour
   bool _isGrabbed = false;
 
   void Start()
-  {    
+  { 
+    StartCoroutine(FormAppearRoutine());
+  }
+
+  public void SetFormHead()
+  {
     FormHead.text = string.Format("Form {0}", Overseer.Instance.GlobalIdentifier);
     Overseer.Instance.GlobalIdentifier++;
-
-    StartCoroutine(FormAppearRoutine());
   }
 
   float _formScaleSpeed = 10.0f;
@@ -130,6 +133,7 @@ public class Form : MonoBehaviour
 
     StartCoroutine(MoveAndShrinkFormRoutine(go.position, () =>
     {
+      _data.State = FormState.IN_QUEUE;
       Overseer.Instance.FormsQueueRef.AddForm(this);
     }));
   }
@@ -146,6 +150,7 @@ public class Form : MonoBehaviour
 
     StartCoroutine(MoveAndShrinkFormRoutine(go.position, () =>
     {
+      _data.State = FormState.IN_STACK;
       Overseer.Instance.FormsStackRef.AddForm(this);
     }));
   }
@@ -153,9 +158,6 @@ public class Form : MonoBehaviour
   float _movingTime = 0.2f;
   IEnumerator MoveAndShrinkFormRoutine(Vector3 posToMoveAt, Callback cb = null)
   {    
-    float x = posToMoveAt.x;
-    float y = posToMoveAt.y;
-
     Vector3 pos = transform.position;
 
     Vector3 scaleVector = Vector3.one;
@@ -191,5 +193,21 @@ public class Form : MonoBehaviour
     }
 
     yield return null;
+  }
+
+  FormData _data = new FormData();
+  public FormData Data
+  {
+    get { return _data; }
+  }
+
+  public FormData GetFormData()
+  {    
+    _data.FormHead = FormHead.text;
+    _data.FormText = FormText.text;
+    _data.PosX = transform.position.x;
+    _data.PosY = transform.position.y;
+
+    return _data;
   }
 }

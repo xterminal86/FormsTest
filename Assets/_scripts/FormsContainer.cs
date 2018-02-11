@@ -24,7 +24,7 @@ public class FormsContainer : MonoBehaviour
     RefreshFillMeter();
   }
 
-  protected void RefreshFillMeter()
+  public void RefreshFillMeter()
   {
     ElementsCounter.text = Container.Count.ToString();
     FillMeter.sizeDelta = new Vector2(38.0f, _heightDelta * Container.Count);
@@ -52,6 +52,8 @@ public class FormsContainer : MonoBehaviour
 
   protected void RestoreForm(Form f)
   {
+    f.Data.State = FormState.NORMAL;
+
     if (Container.Count == 0)
     {
       ImageRef.color = Color.red;

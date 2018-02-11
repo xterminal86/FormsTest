@@ -33,10 +33,19 @@ public class Overseer : MonoSingleton<Overseer>
     _formsStackRef = GameObject.Find("stack").GetComponent<FormsStack>();
   }
 
+  public void ClearContainers()
+  {
+    (_formsQueueRef.Container as Queue<Form>).Clear();
+    (_formsStackRef.Container as Stack<Form>).Clear();
+
+    _formsQueueRef.RefreshFillMeter();
+    _formsStackRef.RefreshFillMeter();
+  }
+
   bool _showText = false;
   float _timer = 0.0f;
   float _timeToShow = 0.0f;
-  public void FlashText(string textToShow, float delaySeconds)
+  public void FlashText(string textToShow, float delaySeconds = 1.0f)
   {
     _timer = 0.0f;
     _timeToShow = delaySeconds;
