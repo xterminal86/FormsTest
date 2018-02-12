@@ -61,6 +61,8 @@ public class Main : MonoBehaviour
       _dataToSave.FormsInStack.Add(formData);
     }
 
+    _dataToSave.GlobalIdentifier = Overseer.Instance.GlobalIdentifier;
+
     var formatter = new BinaryFormatter();
     Stream s = new FileStream(_saveFile, FileMode.Create, FileAccess.Write, FileShare.None);
     formatter.Serialize(s, _dataToSave);
@@ -71,6 +73,12 @@ public class Main : MonoBehaviour
 
   public void LoadHandler()
   {
+    if (!File.Exists(_saveFile))
+    {
+      Overseer.Instance.FlashText("No savefile found!");
+      return;
+    }
+
     foreach (var item in _allForms)
     {
       // If we close form, value in this list becomes null
@@ -98,6 +106,8 @@ public class Main : MonoBehaviour
   {    
     GameObject go;
     Form f;
+
+    Overseer.Instance.GlobalIdentifier = _dataToSave.GlobalIdentifier;
 
     foreach (var item in _dataToSave.ActiveForms)
     {

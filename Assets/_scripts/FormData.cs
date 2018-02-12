@@ -21,6 +21,7 @@ public class DataToSave
   public List<FormData> ActiveForms = new List<FormData>();
   public List<FormData> FormsInQueue = new List<FormData>();
   public List<FormData> FormsInStack = new List<FormData>();
+  public int GlobalIdentifier = 0;
 
   public void Clear()
   {
