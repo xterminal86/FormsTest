@@ -75,6 +75,9 @@ public class FormsContainer : MonoBehaviour
   {
     f.gameObject.SetActive(true);
 
+    Overseer.Instance.SortingOrderMax++;
+    f.FormCanvas.sortingOrder = Overseer.Instance.SortingOrderMax;
+
     Vector3 pos = f.transform.position;
     Vector3 posToMoveAt = new Vector3(Screen.width / 2, Screen.height / 2, 0.0f);
 

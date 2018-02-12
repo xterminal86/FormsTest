@@ -13,6 +13,9 @@ public class Overseer : MonoSingleton<Overseer>
   public int GlobalIdentifier = 0;
 
   [HideInInspector]
+  public int SortingOrderMax = 0;
+
+  [HideInInspector]
   public Form LastDraggedForm;
 
   FormsStack _formsStackRef;

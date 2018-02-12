@@ -58,12 +58,12 @@ public class Form : MonoBehaviour
     _originalPosition.Set(transform.position.x, transform.position.y, transform.position.z);
     _oldMousePos = Input.mousePosition;
 
-    if (Overseer.Instance.LastDraggedForm != null && Overseer.Instance.LastDraggedForm != this)
+    if (FormCanvas.sortingOrder != Overseer.Instance.SortingOrderMax)
     {
-      Overseer.Instance.LastDraggedForm.FormCanvas.sortingOrder = 0;
+      FormCanvas.sortingOrder = Overseer.Instance.SortingOrderMax + 1;
+      Overseer.Instance.SortingOrderMax++;
     }
 
-    FormCanvas.sortingOrder = 1;
     Overseer.Instance.LastDraggedForm = this;
   }
 
@@ -117,6 +117,11 @@ public class Form : MonoBehaviour
     }
 
     Destroy(gameObject);
+
+    if (FormCanvas.sortingOrder == Overseer.Instance.SortingOrderMax)
+    {
+      Overseer.Instance.SortingOrderMax--;
+    }
 
     yield return null;
   }
@@ -215,6 +220,7 @@ public class Form : MonoBehaviour
     _data.FormText = FormText.text;
     _data.PosX = transform.position.x;
     _data.PosY = transform.position.y;
+    _data.SortingOrder = FormCanvas.sortingOrder;
 
     return _data;
   }

@@ -20,6 +20,8 @@ public class Main : MonoBehaviour
   {
     var go = Instantiate(FormPrefab, Vector3.zero, Quaternion.identity, CanvasTransform.transform);
     Form f = go.GetComponent<Form>();
+    Overseer.Instance.SortingOrderMax++;
+    f.FormCanvas.sortingOrder = Overseer.Instance.SortingOrderMax;
     f.SetFormHead();
     _allForms.Add(f);
   }
@@ -62,6 +64,7 @@ public class Main : MonoBehaviour
     }
 
     _dataToSave.GlobalIdentifier = Overseer.Instance.GlobalIdentifier;
+    _dataToSave.SortingOrderMax = Overseer.Instance.SortingOrderMax;
 
     var formatter = new BinaryFormatter();
     Stream s = new FileStream(_saveFile, FileMode.Create, FileAccess.Write, FileShare.None);
@@ -108,6 +111,7 @@ public class Main : MonoBehaviour
     Form f;
 
     Overseer.Instance.GlobalIdentifier = _dataToSave.GlobalIdentifier;
+    Overseer.Instance.SortingOrderMax = _dataToSave.SortingOrderMax;
 
     foreach (var item in _dataToSave.ActiveForms)
     {
@@ -118,6 +122,9 @@ public class Main : MonoBehaviour
       f.FormText.text = item.FormText;
 
       f.transform.position = new Vector3(item.PosX, item.PosY, 0.0f);
+
+      f.FormCanvas.sortingOrder = item.SortingOrder;
+
       _allForms.Add(f);
     }
 

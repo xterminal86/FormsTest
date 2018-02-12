@@ -12,6 +12,8 @@ public class FormData
   public float PosX = 0.0f;
   public float PosY = 0.0f;
 
+  public int SortingOrder = 0;
+
   public FormState State = FormState.NORMAL;
 }
 
@@ -21,7 +23,9 @@ public class DataToSave
   public List<FormData> ActiveForms = new List<FormData>();
   public List<FormData> FormsInQueue = new List<FormData>();
   public List<FormData> FormsInStack = new List<FormData>();
+
   public int GlobalIdentifier = 0;
+  public int SortingOrderMax = 0;
 
   public void Clear()
   {
